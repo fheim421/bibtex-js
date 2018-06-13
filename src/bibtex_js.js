@@ -1,5 +1,5 @@
 ﻿
-/* 
+/*
  * Author = Philip Cooksey
  * Edited = July 2015
  * Website = https://github.com/pcooksey/bibtex-js
@@ -9,7 +9,7 @@
  *  no comment handling within strings
  *  no string concatenation
  *  no variable values yet
- 
+
  * Grammar implemented here:
  *  bibtex -> (string | preamble | comment | entry)*;
  *  string -> '@STRING' '{' key_equals_value '}';
@@ -354,6 +354,13 @@ function BibtexDisplay() {
         string = string.replace(/[ ]*[\n\t][ ]*/g, " ");
         string = string.replace(/[ ]+/g, " ");
         var arrayString = string.split(new RegExp("[\\s]+and[\\s]+"));
+        arrayString = arrayString.map(function(authorName) {
+            var splitNewStringComma = authorName.split(",");
+            if (splitNewStringComma.length === 2) {
+                return splitNewStringComma[1].trim() + " " + splitNewStringComma[0].trim();
+            }
+            return authorName;
+        });
         var newString = arrayString[0];
         for (i = 1; i < arrayString.length; i++) {
             if (i + 1 >= arrayString.length) {
@@ -422,7 +429,7 @@ function BibtexDisplay() {
             });
         });
 
-        // fill in remaining fields 
+        // fill in remaining fields
         for (var index in keys) {
             var key = keys[index];
             var value = entry[key] || "";
@@ -741,7 +748,7 @@ function bibtex_js_draw() {
     }
 }
 
-/** 
+/**
 BibTex Searcher is used with input form
 */
 function BibTeXSearcher() {
